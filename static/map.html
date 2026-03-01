@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Location Map - Workshop Demo</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        button { margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="controls">
+        <button onclick="fetchAndUpdate()">Refresh Now</button>
+        <span id="status">Last update: never</span>
+        <br>
+        <small>Auto-refresh every 10s</small>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([12.97, 77.59], 12); // Default to Bengaluru
+
+        // Add OpenStreetMap tiles (free, no key)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Store markers so we can update/remove them
+        const markers = {};
+
+        async function fetchAndUpdate() {
+            try {
+                const response = await fetch('/api/view_location/json');
+                const data = await response.json();
+
+                document.getElementById('status').textContent = `Last update: ${new Date().toLocaleTimeString()}`;
+
+                // Clear old markers not in current data
+                for (const ip in markers) {
+                    if (!data[ip]) {
+                        map.removeLayer(markers[ip]);
+                        delete markers[ip];
+                    }
+                }
+
+                // Add/update markers
+                for (const ip in data) {
+                    const loc = data[ip];
+                    const lat = loc.latitude;
+                    const lon = loc.longitude;
+                    const acc = loc.accuracy ? `±${loc.accuracy.toFixed(1)}m` : 'N/A';
+                    const time = new Date(loc.received_at).toLocaleString();
+
+                    const popupContent = `
+                        <b>IP:</b> ${ip}<br>
+                        <b>Lat/Lon:</b> ${lat}, ${lon}<br>
+                        <b>Accuracy:</b> ${acc}<br>
+                        <b>Last seen:</b> ${time}
+                    `;
+
+                    if (markers[ip]) {
+                        // Update existing
+                        markers[ip].setLatLng([lat, lon]);
+                        markers[ip].setPopupContent(popupContent);
+                    } else {
+                        // New marker
+                        const marker = L.marker([lat, lon]).addTo(map)
+                            .bindPopup(popupContent);
+                        markers[ip] = marker;
+                    }
+                }
+
+                // Auto-center if only one location
+                if (Object.keys(data).length === 1) {
+                    const first = Object.values(data)[0];
+                    map.setView([first.latitude, first.longitude], 15);
+                }
+
+            } catch (err) {
+                console.error('Fetch error:', err);
+                document.getElementById('status').textContent = 'Error loading locations';
+            }
+        }
+
+        // Initial load
+        fetchAndUpdate();
+
+        // Auto-refresh every 10 seconds
+        setInterval(fetchAndUpdate, 10000);
+    </script>
+</body>
+</html>

